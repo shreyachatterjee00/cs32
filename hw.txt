@@ -1,0 +1,74 @@
+Shreya Chatterjee
+
+2. This will result in the error "Invalid operands to binary expression" because the '>' operator is being used on objects of the class Coord, which is not allowed because the computer does not know how to compare these objects because they are not built in types. The '>' operator would have to be overloaded for this to work.
+
+4b. There must be two parameters because the path variable parameter must exist so that it can be modified each time it is recursively passed into the function. This way, the labels of the children nodes of the root node can be appended to the string. 
+
+5. 
+
+a. 
+
+  const int N = some value;
+	bool isFriend[N][N];
+	...
+	int numMutualFriends[N][N];
+	for (int i = 0; i < N; i++)				O(N ^ 3)
+	{
+	    numMutualFriends[i][i] = -1;  
+	    for (int j = 0; j < N; j++)				O(N ^ 2)
+	    {
+	        if (i == j)					O(1)
+	            continue;
+	        numMutualFriends[i][j] = 0;
+	        for (int k = 0; k < N; k++)			O(N)
+	        {
+	            if (k == i  ||  k == j)			//O(1)
+	                continue;
+		    if (isFriend[i][k]  &&  isFriend[k][j])	//O(i) / O(k) / O(j) 
+	        	numMutualFriends[i][j]++; 		//O(1)
+	        }
+	    }
+	}
+
+The time complexity of this algorithm is O(N ^ 3). This is because there are three for loops present that all loop N times. Because these are nested loops, the first loop would make the time complexity of this algorithm O(N). The next one would make the complexity O(N^2), because the loop that is O(N) will execute N times. With this logic, the third loop would create a time complexity of O(N ^ 3). The other lines of code are irrelevant because they do not add anything significant to the time. 
+
+b.
+
+const int N = some value;
+	bool isFriend[N][N];
+	...
+	int numMutualFriends[N][N];
+	for (int i = 0; i < N; i++)				//O(N ^ 3) / O(N ^ 2) / O(N) 
+	{
+	    numMutualFriends[i][i] = -1;  
+				          
+	    for (int j = 0; j < i; j++)   			//O(i)
+	    {
+	        numMutualFriends[i][j] = 0;
+	        for (int k = 0; k < N; k++)			//O(N)
+	        {
+	            if (k == i  ||  k == j)
+	                continue;
+		    if (isFriend[i][k]  &&  isFriend[k][j])
+	        	numMutualFriends[i][j]++;
+	        }
+	        numMutualFriends[j][i] = numMutualFriends[i][j];	
+	    }
+	}
+
+
+The time complexity of this version of the algorithm depends. In the worst case scenario, i is equal to N, and the algorithm is the same as in 5a, meaning the time stays at O(N ^ 3). If i is 0, then the first and second for loops would not execute more than once, and the third would execute only N times. So, the time complexity would be O(N) in the best case. If j is 0, the algorithm would execute with a time of O(N ^ 2), because the innermost loop would execute N times and the outermost loop would execute N times as well. So, the time complexity of this algorithm depends, but the time complexity will either be the same or better than in 5a. 
+
+6. 
+
+a. Since all three sequences passed into this function have about N elements, any call to the function get() and insert(), in the worst case, will result in a time of O(N). For the first for loop, this call is made twice, but since coefficients are not taken into the context, the body of the loop has a time of O(N). The first for loop is executed the number of times that there are elements in the smaller sequence; since they are both N, this will be executed N times, making the first for loop have a time of O(N ^ 2). 
+
+The inside of the second for loop is also O(N), as the get function is called once. The for loop is executed the number of times needed to complete the sequence, to take into account if one sequence has more elements than the other. If both sequences have N elements, this loop will not be executed, so it is insignificant. 
+
+The total function has a time of O(N ^ 2).
+
+b. This function will be faster, because the values are being inserted without looking through the entire sequence first. Since the sequences both have about N elements, inserting all of these elements into the new sequence will have a time of about O(N). This time includes the first and second for loops, because all the elements may not be inserted until the end of the second for loop. 
+
+So, the total time complexity of this version of the interleave function is O(N), which is better than the implementation in 6a. ß
+
+
