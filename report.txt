@@ -1,0 +1,417 @@
+Shreya Chatterjee
+
+1. Description of the design of my classes
+
+The major data structures are the two arrays that I used for my Board class. I used two arrays, one for the South holes and one for the North holes. I decided to design the Board class this way so that I could keep track of the two separate sides. As the specs define, the first value in each array (index 0) is the pot, and the rest are the holes. 
+
+I only implemented private member functions in the Smart Player class. To keep my chooseMove clean, I used a helper functions called "findBestMove." This function implements the minimax algorithm, and evaluates positions for the SmartPlayer. 
+
+2. Description of design for SmartPlayer::chooseMove
+
+SmartPlayer::chooseMove delegates most of the work to a helper function "findBestMove." This function first checks two base cases: if the alarm clock times out/if the depth goes past the first value it was set to (5, in my program) and if the game is over. If either of these base cases are reached, the endHole is set to negative one, and the value is calculated based on the position. 
+
+The heuristics I used to evaluate board position was the number of beans in the South Pot minus the number of beans in the North Pot. Also, if the game is over and South wins, the value is very large; if the game is over and North wins, the value is very small, and if there is a tie, the value is 0. South always prefers large numbers, while North prefers smaller numbers. 
+
+Otherwise, the function uses a for loop to go through all possible holes (holes with beans in them) to determine the best possible hole to choose. The function creates Game Trees for these holes, until one of the base cases are hit. 
+
+3. Pseudocode 
+
+Board::sow(Side s, int hole, Side & endSide, int & endHole) {
+
+	//if hole is a pot or invalid, return false 
+	//if hole is empty, return false
+
+	//set pointer iterator to iterate through holes 
+	//set values for s's starting point, ending point, hole immediately before/after s's pot 
+	//set values for the opposite starting point, ending point, hole immediately before/after opposite's pot, etc 
+	
+	//while there are still beans left 
+		//if iterator is at myPot 
+			//increment beans, iterator now goes to first hole on other side 
+
+		//if at oppositePot
+			//continue to my first hole, do not increment beans 
+
+		
+		//if at my last hole, continue to my pot, increment accordingly 
+		//if at opposite end, continue to their pot, increment accordingly 
+		
+		//else, add a bean to the current hole 
+
+
+	//update values of endSide and endHole 
+		
+}
+
+SmartPlayer::chooseMove(const Board & b, Side s) const {
+	//create a copy of the board 
+
+	//if the beans in play on either side are 0, return -1 
+
+	//create count, to count depth, set to 5
+	
+	//create an alarm clock object, set to 4900 milliseconds 
+	//call findBestMove 
+}
+
+SmartPlayer::findBestMove(const Board & board, Side s, int & bestHole, int & value, AlarmClock & alarm, int count) {
+	//establish opposite side
+
+	//first base case: if beans on either side = 0
+		//bestHole = -1
+		//get total amount of beans on each side 
+	
+		//if north wins 
+			//value is negative
+
+		//if south wins
+			//value is positive 
+
+		//if they tie
+			//value is 0 
+		//return 
+
+		//second base case: alarm times out or count = 0
+			//bestHole = -1 
+			//value is beans in south's pot - beans in north's pot 
+
+		//return 
+
+		//for all holes that have beans 
+
+			//copy the Board 
+
+			//sow, to emulate a move
+
+			//if the move ends in current player's pot
+				//count -- 
+				//recursively call the function, with the current side, h2, v2
+
+			//if the move ends in a capture 
+				//capture 
+
+			//count --
+			//recursively call the function with the other side, h2, v2
+
+
+			//if the current value is South and v2 is greater than value 
+				//value = v2
+				//bestHole = h 
+
+
+			//if the current value is North and v2 is less than value 
+				//value = v2
+				//bestHole = h
+
+
+	//return 
+		
+}
+
+HumanPlayer::chooseMove(const Board & b, Side s) const {
+
+	//if beans in play on Side s = 0, return -1 
+
+	//prompt user for hole
+	//if hole is not valid, tell user hole is not valid, continue prompting until valid input 
+
+	//if hole is empty, tell user hole is empty, continue prompting until valid input 
+
+	//return input from user 
+}
+
+BadPlayer::chooseMove(const Board &b, Side s) const {
+
+	//if beans in play on Side s = 0, return -1 
+	
+	//find first hole in array that has beans, traversing array upwards 
+
+	//return first hole that has beans 
+}
+
+Game::status(bool & over, bool & hasWinner, Side & winner) const {
+
+	//if one side has no beans, game is over
+
+	//if beans in North Pot is greater than beans in South Pot
+		//winner is North
+
+	//if beans in South Pot is greater than beans in North Pot
+		//winer is South
+
+	//if beans are equal
+		//tie 
+
+
+	//else 
+		//game is not over 
+}
+
+
+Game::move() {
+
+	//create a bool flag called cont 
+
+	//while (cont) 
+
+		//get status 
+
+		//get hole player wants to choose 
+
+		//sow from that hole 
+			//set cont to false 
+
+		//if endHole = current player's pot 
+			//take another turn
+			//set cont to true 
+
+		//if opposite hole is empty and endHole has one bean in it, capture 
+
+		//get status 
+			//if game is now over, sweep beans into correct pot and return false 
+
+		//return true 
+}
+
+Game::play() {
+	
+	//if both players are interactive 
+		//while game is not over 
+			//make user press ENTER to continue 
+			//get status
+
+	//else 
+		//while game is not over
+			//move
+			//get status 
+
+	//if game is over 
+		//get status
+		//print who won/status of the game 
+
+}
+
+
+
+4. Bugs 
+
+My SmartPlayer::chooseMove function does not work all the way. It seems to work for larger Boards, such as Boards with 4, 5, and 6 holes. However, for Boards with 3 or 2 holes, the function continually chooses the same hole, even when there are no beans in it. Additionally, even when there are 4, 5, or 6 holes, the function will sometimes return the hole 1 continually, even though there are no beans in it. Furthermore, when smartPlayer is the South Player, it does this almost every time, whereas when it is the NorthPlayer, it sometimes works correctly. 
+
+I have added conditions in the chooseMove function to make sure that the SmartPlayer never chooses an illegal hole. Instead, if the value of BestHole is clearly incorrect (like -1 or a hole that does not have beans in it), the player will choose the first available hole with beans in it. 
+
+
+5. Test Cases 
+
+//Board
+Board b(4, 2);
+
+assert(b.holes() == 4 && b.totalBeans == 16); 
+	reason: test holes and totalBeans functions 
+
+b.setBeans(SOUTH, 1, 3);
+
+assert(b.beans(SOUTH, 1) == 3); 
+	reason: test setBeans and beans functions 
+
+Side side;
+int endHole;
+
+b.sow(SOUTH, 1, endHole, side); 
+
+assert(b.beans(SOUTH, 2) == 3);
+assert(b.beans(SOUTH, 3) == 3);
+assert(b.beans(SOUTH, 4) == 3);
+	reason: test sow function 
+
+b.moveToPot(SOUTH, 2, SOUTH);
+
+assert(b.beans(SOUTH, 0) == 3);
+	reason: test moveToPot function 
+
+//Player
+
+HumanPlayer hp("Person 1"); 
+
+assert(hp.name() == "Person 1" && hp.isInteractive());
+	reason: test HumanPlayer's trivial functions  
+
+BadPlayer bp ("bad player");
+
+assert(bp.name() == "bad player" && !bp.is.Interactive());
+	reason: test BadPlayer's trivial functions 
+
+SmartPlayer sp ("smart player");
+
+assert(sp.name() == "smart player" && !sp.is.Interactive());
+	reason: test SmartPlayer's trivial functions 
+
+Board b(3, 3);
+
+int move = hp.chooseMove(b, SOUTH);
+assert(move == 1 || move == 2 || move == 3);
+	reason: test that you are not allowed to make a move other than the holes that have beans 
+
+move = bp.chooseMove(b, SOUTH);
+assert(move == 1 || move == 2 || move == 3);
+	reason: test that bad player does not make illegal moves
+
+move = sp.chooseMove(b, SOUTH);
+assert(move == 1 || move == 2 || move == 3);
+	reason: test that smart player does not make illegal moves 
+
+//Game
+
+HumanPlayer h("human");
+BadPlayer b("bad");
+Board b(3, 3);
+Game g(b, &h, &b);
+bool over, hasWinner;
+Side winner;
+
+
+//	Bad
+//   3   3   3
+// 0           0
+//   3   3   3
+//     Human
+
+g.status(over, hasWinner, winner);
+assert(!over && g.beans(NORTH, 0) == 0 && g.beans(SOUTH, 0) == 0 && g.beans(NORTH, 1) == 3 && g.beans(NORTH, 2) == 3 && g.beans(NORTH, 3) == 3 && g.beans(SOUTH, 1) == 3 && g.beans(SOUTH, 2) == 3 && g.beans(SOUTH, 3) == 3);
+	reason: check status and make sure beans in holes are correct 
+
+
+g.move();
+//human chooses hole 1
+
+//	Bad
+//   3   3   3
+// 0           1
+//   0   4   4
+//     Human
+
+g.status(over, hasWinner, winner);
+assert(!over && g.beans(NORTH, 0) == 0 && g.beans(SOUTH, 0) == 1 && g.beans(NORTH, 1) == 3 && g.beans(NORTH, 2) == 3 && g.beans(NORTH, 3) == 3 && g.beans(SOUTH, 1) == 0 && g.beans(SOUTH, 2) == 4 && g.beans(SOUTH, 3) == 4);
+	reason: check status and make sure beans in holes are correct 
+
+//human moves again 
+//human chooses hole 1
+
+//	Bad
+//   3   3   3
+// 0           1
+//   0   4   4
+//     Human
+
+g.status(over, hasWinner, winner);
+assert(!over && g.beans(NORTH, 0) == 0 && g.beans(SOUTH, 0) == 1 && g.beans(NORTH, 1) == 3 && g.beans(NORTH, 2) == 3 && g.beans(NORTH, 3) == 3 && g.beans(SOUTH, 1) == 0 && g.beans(SOUTH, 2) == 4 && g.beans(SOUTH, 3) == 4);	
+	reason: check that humanPlayer gets another move if they end in the pot
+
+
+//computer output: not a valid hole 
+
+g.status(over, hasWinner, winner);
+assert(!over && g.beans(NORTH, 0) == 0 && g.beans(SOUTH, 0) == 1 && g.beans(NORTH, 1) == 3 && g.beans(NORTH, 2) == 3 && g.beans(NORTH, 3) == 3 && g.beans(SOUTH, 1) == 0 && g.beans(SOUTH, 2) == 4 && g.beans(SOUTH, 3) == 4);
+	reason: check that only a valid move for HumanPlayer is allowed 
+
+//human chooses hole 2
+
+//	Bad
+//   3   4   4
+// 0           2
+//   0   0   5
+//     Human
+
+g.status(over, hasWinner, winner);
+assert(!over && g.beans(NORTH, 0) == 0 && g.beans(SOUTH, 0) == 2 && g.beans(NORTH, 1) == 3 && g.beans(NORTH, 2) == 4 && g.beans(NORTH, 3) == 4 && g.beans(SOUTH, 1) == 0 && g.beans(SOUTH, 2) == 0 && g.beans(SOUTH, 3) == 5);
+	reason: check that the number of beans in holes is correct, human gets another turn 
+
+//bad player chooses hole 1
+
+//	Bad
+//   0   4   4
+// 1           2
+//   1   1   5
+//     Human
+
+
+//human chooses hole 1
+
+//	Bad
+//   0   4   4
+// 1           2
+//   0   2   5
+//     Human
+
+
+//badPlayer chooses hole 2
+
+//	Bad
+//   1   0   4
+// 2           2
+//   1   3   5
+//     Human
+
+
+//human chooses hole 1
+
+//	Bad
+//   1   0   4
+// 2           2
+//   0   4   5
+//     Human
+
+
+//badPlayer chooses hole 1
+
+//	Bad
+//   0   0   4
+// 3           2
+//   0   4   5
+//     Human
+
+
+//badPlayer moves again
+//badPlayer chooses hole 3
+
+//	Bad
+//   1   1   0
+// 4           2
+//   1   4   5
+//     Human
+
+//human chooses hole 1
+
+//	Bad
+//   1   1   0
+// 4           2
+//   0   5   5
+//     Human
+
+b.setBeans(SOUTH, 2, 0);
+b.setBeans(SOUTH, 3, 0); //simulate the end of the game 
+
+//	Bad
+//   1   1   0
+// 4           2
+//   0   0   0
+//     Human
+
+//beans should get swept to Bad's pot 
+
+g.move();
+
+//	Bad
+//   0   0   0
+// 6           2
+//   0   0   0
+//     Human
+
+g.status(over, hasWinner, winner);
+assert(over && g.beans(NORTH, 0) == 6 && g.beans(SOUTH, 0) == 2 && g.beans(NORTH, 1) == 0 && g.beans(NORTH, 2) == 0 && g.beans(NORTH, 3) == 0 && g.beans(SOUTH, 1) == 0 && g.beans(SOUTH, 2) == 0 && g.beans(SOUTH, 3) == 0);
+	reason: make sure game is over, and beans in holes are correct
+
+	
+
+
+
+
