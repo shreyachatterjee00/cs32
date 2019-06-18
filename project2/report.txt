@@ -1,5 +1,4 @@
 Shreya Chatterjee
-ID: 305124409
 
 1. Description of implementation: 
 I used a simple doubly-linked list. In the private section of my class, I declared a Node struct, that includes a value that the Node holds, and a next and previous pointer. Outside of this struct but still in the private section of my class, I declared a Node * head variable. I did not use a dummy node, or a tail pointer, and the list was not circular. 
