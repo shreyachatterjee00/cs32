@@ -1,0 +1,89 @@
+Shreya Chatterjee
+HW 5
+
+1a. 
+
+				50 
+
+		20 				60 
+
+	10 		40 				70 
+
+	   15        30 			65		80
+
+		  25	39			     	     71 
+
+
+
+1b. 
+in order: 10 15 20 25 30 39 40 50 60 65 70 71 80 
+preorder: 50 20 10 15 40 30 25 39 60 70 65 80 71
+postorder: 15 10 25 39 30 40 20 65 71 80 70 60 50 
+
+1c. 				
+				50 
+
+		25				60
+	
+	10 		40 				70
+	
+	   15	     39				65		80
+						   
+						   	      71
+
+2a. 
+struct treeNode {
+	int data;
+	treeNode * parent;
+	treeNode * leftChild;
+	treeNode * rightChild;
+};
+
+2b. 
+
+//newNodePtr has been created and has a value 
+
+treeNode insert(treeNode * treePtr, treeNode * newNodePtr) 
+
+base case: if node is null
+	return newNodePtr
+
+if the newNode's value is less than the treePtr node's value
+	insert at left of current node, calling function recursively 
+
+if the newNode's value is greater than treePtr node's value 
+	insert at right of current node, calling function recursively 
+
+return treePtr
+
+3. 
+a. 					
+					7
+
+				3		6
+
+			     0     2	      4
+
+
+
+b. array: 7 3 6 0 2 4
+c. array: 6 3 4 0 2
+
+
+
+4.
+
+a. O(C + S)
+b. O(logC + S)
+c. O(logC + logS)
+d. O(1 + logS) = O(logS) /
+e. O(1)
+f. O(logC + S) 
+g. O(SlogS)
+h. O(ClogS)
+
+
+
+
+
+
