@@ -1,5 +1,4 @@
 Shreya Chatterjee
-UCLA ID: 305124409
 
 2. First 12 coordinates popped off the stack by the algorithm: 
 	1. 3, 5
