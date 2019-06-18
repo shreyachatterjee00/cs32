@@ -1,0 +1,585 @@
+Shreya Chatterjee
+ID: 305124409
+
+1. Description of implementation: 
+I used a simple doubly-linked list. In the private section of my class, I declared a Node struct, that includes a value that the Node holds, and a next and previous pointer. Outside of this struct but still in the private section of my class, I declared a Node * head variable. I did not use a dummy node, or a tail pointer, and the list was not circular. 
+
+2. Pseudocode: 
+
+Sequence::~Sequence () {
+	create a node p, set it to the head of the current sequence
+	while the node is not the null ptr
+		a new node, q, is the value of p->next
+		p is deleted
+		q assumes the value of p 
+}
+
+Sequence::Sequence(const Sequence & other) {
+	swap sizes of this and other 
+	set current head to null ptr
+	create a node to point to the other sequence's head 
+	establish the head node for the new sequence
+		establish this node's next and prev pointers
+	
+	loop through original sequence 
+		create a new node to put in new sequence
+		make values of current and original nodes equal 
+		establish next and prev pointers 
+}
+
+Sequence & Sequence::operator=(const Sequence & rhs) {
+	if the sequences are not equal 
+		create a temp sequence with the values of rhs
+		swap the this sequence with the temp sequence
+
+	return this sequence
+		
+}
+
+bool Sequence::get(int pos, ItemType& value) const {
+	if pos is valid
+		Node p = head 
+		loop through sequence to get p to the value before pos 
+
+	if p does not equal null ptr
+		get the value in p 
+		return true
+
+	if either of these conditions are not met, return false
+}
+
+bool Sequence::set(int pos, const ItemType & value) {
+	if pos is valid
+		loop through sequence to find node before pos 
+	
+	if p is not nullptr 
+		put the value in p in the parameter value
+		return true
+	
+	if either of these conditions are not met
+		return false 
+}
+
+int Sequence::insert(int pos, const ItemType & value) {
+	if pos is valid 
+
+		if head is not null ptr 
+			
+			if pos = 0 
+				create a new node 
+				assign the node's value
+				establish the node's next and prev pointers
+				link the current head node to the next ptr
+				the head now equals the new node 
+				increase size
+				return pos
+		
+			if pos = size 
+				loop through the sequence and make p point to the last node 
+				create a new node
+				establish node's next and prev pointers
+				node after p = the new node
+				increase size
+				return pos 
+
+			if pos is neither the beginning nor end 
+				loop through sequence 
+				make p point to node before pos 
+				create a new node 
+				establish node's next and prev pointers 
+				node after p = new node 
+				increase size
+				return pos 
+
+		if head is null
+			
+			create a new node 
+			assign node's value
+			node's prev and next = nullptr
+			head = node
+			increase size
+			return 0
+							
+}
+
+int Sequence::insert(const ItemType & value) {
+	create a counter = 0
+	loop through sequence
+		if ptr does not equal nullptr
+			if value = the value in the current node
+			pos = current location 
+			break
+		if counter is not equal to size -1
+			keep incrementing 
+		increase counter
+	
+	if counter is equal to size
+		pos = size
+
+	
+	call insert function with pos and value 
+	return pos 
+
+}
+
+bool Sequence::erase(int pos) {
+	if pos is valid 
+
+		if pos is 0 
+			head = the node after head
+			delete the current head 
+			decrease size 
+			return true
+
+		if deleting last item
+			traverse to last node
+			item before last node points to nullptr
+			delete last node
+			decrease size
+			return true
+		
+		else, deleting some item in the middle
+			node * p = head
+			p points to node to be deleted
+			fix nodes around p so they don't point to the dead node
+			delete node
+			decrease size 
+			return true 
+
+	else 
+		return false
+			
+}
+
+int Sequence::remove(const ItemType & value) {
+	counter = 0
+	loop through sequence
+		if value = value to delete
+		erase(current position)
+		decrease size
+		increase counter
+	
+	return counter
+}
+
+
+int Sequence::find(const ItemType & value) const {
+	counter = 0
+	traverse through sequence
+		if value is found
+			break
+		increase counter
+
+	if p is not nullptr
+		return counter
+
+	if p is nullptr
+		return -1
+}
+
+void Sequence::swap(Sequence & other) {
+	create temp size
+	swap sizes
+
+	create temp head pointer
+	swap head pointers 
+}
+
+void interleave(const Sequence & seq1, const Sequence & seq2, Sequence & result) {
+	if sequence 1 is empty and sequence 2 is not
+		result = seq2
+
+	if sequence 2 is empty and sequence 1 is not
+		result = seq1
+
+	if both are empty 
+		erase anything in result
+
+	else 
+		create temp Sequence, for cases of aliasing 
+		temp = result 
+		erase anything in temp 
+
+		establish int variable iterations 
+
+		figure out how many times to iterate the for loop, depending on size of sequences
+			if the sizes are the same, loop through 2 times the size of one
+			if sizes are different, loop through seq1 size + seq2 size + 2 * the difference btwn the sequences 
+
+		establish seq1counter, seq2counter, and generalCounter to keep track of number of elements in each sequence
+
+		loop through "iterations" amounts of time
+			if i is even, including 0 
+			insert the seq1 value into the temp list 
+
+			if i is odd
+			insert the seq2 value into the temp list 
+
+		assign temp list to result list 
+
+}
+
+int subsequence(const Sequence & seq1, const Sequence & seq2) {
+	loop through sequence 1
+		if the first item in sequence 2 = the current item in seq1
+	
+		check if the rest of the elements in seq2 are found in order in seq1
+			if they are, return current position
+			if they are not, keep looping 
+
+
+	return -1
+}
+
+3. Test Cases: 
+
+//copy constructor and assignment operator
+    Sequence s;
+    s.insert(1);
+    s.insert(2);
+    s.insert(3);
+    
+    Sequence t(s);
+    cout << "sequence t: " << endl;
+    t.dump();
+    cout << endl;
+    cout << endl;
+    cout << endl;
+    
+    s.insert(4);
+    s.insert(5);
+    s.insert(6);
+    
+    t = s;
+    
+    cout << "sequence t: " << endl;
+    t.dump();
+    cout << endl;
+    cout << endl;
+    cout << endl;
+    
+    //empty and size
+    Sequence a;
+    assert(a.empty() == true);
+    assert(a.size() == 0);
+    a.insert(1);
+    assert(a.empty() == false);
+    assert(a.size() == 1);
+    
+    //get
+    Sequence b;
+    ItemType value;
+    
+    assert(b.get(0, value) == false); //empty list
+    
+    b.insert(1);
+    b.insert(2);
+    b.insert(3);
+    
+    b.get(0, value); //front of list
+    assert(value == 1);
+    
+    b.get(1, value);
+    assert(value == 2); //middle of list
+    
+    b.get(2, value);
+    assert(value == 3); //end of list
+    
+    //set
+    Sequence c;
+    
+    c.insert(1);
+    c.insert(2);
+    c.insert(3);
+    c.insert(4);
+    
+    c.set(0, 20); //front of list
+    c.set(1, 30); //middle of list
+    c.set(3, 40); //end of list
+    
+    cout << "sequence c:" << endl;
+    c.dump(); //should be 20, 30, 3, 40
+    cout << endl;
+    cout << endl;
+    cout << endl;
+    
+    //insert
+    Sequence d;
+    
+    d.insert(0, 1); //empty list
+    d.insert(0, 2); //front of list
+    d.insert(2, 4);
+    d.insert(3, 5);
+    d.insert(4, 6);
+    
+    d.insert(3, 50); //middle of list
+    d.insert(4, 60); //end of list
+    
+    //sequence should be 2, 1, 4, 50, 60, 5, 6
+    
+    cout << "sequence d: " << endl;
+    d.dump();
+    cout << endl;
+    cout << endl;
+    cout << endl;
+    
+    //insert, pt 2, only one parameter
+    
+    d.insert(1); //front of list
+    d.insert(100); //end of list
+    d.insert(40); //middle of list
+    
+    //sequence should be 1, 2, 1, 4, 40, 50, 60, 5, 6, 100
+    
+    cout << "sequence d: " << endl;
+    d.dump();
+    cout << endl;
+    cout << endl;
+    cout << endl;
+
+    Sequence e;
+    e.insert(1);
+    e.insert(0); //front of list
+    e.insert(3); //end of list
+    e.insert(2); //middle of list
+    
+    //sequence should be 0, 1, 2, 3
+    
+    cout << "sequence e: " << endl;
+    e.dump();
+    cout << endl;
+    cout << endl;
+    cout << endl;
+    
+    //erase
+    e.erase(0); //front of list
+    //e is now 1, 2, 3
+    e.erase(2); //end of list
+    //e is now 1, 2
+    e.erase(1); //middle of list
+    //e is now 1
+    
+    //sequence is 2
+    
+    cout << "sequence e: " << endl;
+    e.dump();
+    cout << endl;
+    cout << endl;
+    cout << endl;
+    
+    //remove
+    
+    Sequence f;
+    f.insert(0, 1);
+    f.insert(1, 1);
+    f.insert(2, 2);
+    f.insert(3, 3);
+    f.insert(4, 4);
+    f.insert(5, 4);
+    
+    //1, 1, 2, 3, 4, 4
+    cout << "sequence f: " << endl;
+    f.dump();
+    cout << endl;
+    cout << endl;
+    cout << endl;
+    
+    f.remove(1); //front of list
+    f.remove(2); //middle of list
+    f.remove(4); //end of list
+    
+    cout << "sequence f: " << endl;
+    f.dump();
+    cout << endl;
+    cout << endl;
+    cout << endl;
+    
+    //swap
+    
+    Sequence g;
+    Sequence h;
+    
+    g.insert(1);
+    g.insert(2);
+    
+    //swap w an empty sequence
+    
+    g.swap(h);
+    
+    cout << "sequence g: " << endl;
+    g.dump();
+    cout << endl;
+    cout << endl;
+    cout << endl;
+    
+    cout << "sequence h: " << endl;
+    h.dump();
+    cout << endl;
+    cout << endl;
+    cout << endl;
+    
+    //swap w a one element sequence
+    
+    Sequence i;
+    i.insert(1);
+    
+    Sequence j;
+    j.insert(1);
+    j.insert(2);
+    j.insert(34);
+    j.insert(234);
+    
+    i.swap(j);
+    
+    cout << "sequence i: " << endl;
+    i.dump();
+    cout << endl;
+    cout << endl;
+    cout << endl;
+    
+    cout << "sequence j: " << endl;
+    j.dump();
+    cout << endl;
+    cout << endl;
+    cout << endl;
+    
+    //swap longer sequences
+    
+    Sequence k;
+    k.insert(123);
+    k.insert(34);
+    k.insert(34);
+    k.insert(32);
+    k.insert(1);
+    k.insert(8);
+    
+    Sequence l;
+    l.insert(0);
+    l.insert(1);
+    l.insert(2);
+    l.insert(3);
+    l.insert(4);
+    l.insert(5);
+    
+    k.swap(l);
+    
+    cout << "sequence k: " << endl;
+    k.dump();
+    cout << endl;
+    cout << endl;
+    cout << endl;
+    
+    cout << "sequence l: " << endl;
+    l.dump();
+    cout << endl;
+    cout << endl;
+    cout << endl;
+    
+     
+    //interleave
+    
+    Sequence m;
+    m.insert(1);
+    m.insert(2);
+    m.insert(3);
+    m.insert(4);
+    
+    Sequence n;
+    n.insert(10);
+    n.insert(20);
+    
+    Sequence o;
+    
+    //works if either sequence is longer than the other
+    interleave(m, n, o);
+    cout << "sequence o: " << endl;
+    o.dump();
+    cout << endl;
+    cout << endl;
+    cout << endl;
+    
+    interleave(n, m, o);
+    cout << "sequence o: " << endl;
+    o.dump();
+    cout << endl;
+    cout << endl;
+    cout << endl;
+    
+    //works the same if result sequence already has things in int
+    
+    o.insert(2);
+    o.insert(20);
+    
+    interleave(m, n, o);
+    cout << "sequence o: " << endl;
+    o.dump();
+    cout << endl;
+    cout << endl;
+    cout << endl;
+    
+    //if either are emtpy, result is the other one
+    
+    Sequence p;
+    
+    interleave(p, m, o);
+    cout << "sequence o: " << endl;
+    o.dump();
+    cout << endl;
+    cout << endl;
+    cout << endl;
+    
+    interleave(p, n, o);
+    cout << "sequence o: " << endl;
+    o.dump();
+    cout << endl;
+    cout << endl;
+    cout << endl;
+    
+    //if both are empty, o is empty
+    interleave(p, p, o);
+    cout << "sequence o: " << endl;
+    o.dump();
+    cout << endl;
+    cout << endl;
+    cout << endl;
+    
+    //aliasing
+    interleave(n, m, n);
+    cout << "sequence n: " << endl;
+    n.dump();
+    cout << endl;
+    cout << endl;
+    cout << endl;
+    
+    
+    //subsequence
+    Sequence q;
+    q.insert(10);
+    q.insert(20);
+    q.insert(30);
+    q.insert(40);
+    q.insert(50);
+    
+    Sequence r;
+    r.insert(30);
+    r.insert(40);
+    
+    assert(subsequence(q, r) == 2);     //regular subsequence input
+    
+    r.insert(10);
+    r.insert(20);
+    
+    assert(subsequence(q, r) == 0);    //works at beginning of sequence
+    
+    r.insert(27);
+    
+    assert(subsequence(q, r) == -1);     //returns -1 is subsequence is not present in sequence
+    
+    assert(subsequence(q, q) == 0);     //works with aliasing
+    
+    r.remove(27);
+    q.insert(27);
+    
+    assert(subsequence(q, r) == -1);   //works if some items in subsequence are there, but not al
+
+
